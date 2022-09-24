@@ -1,43 +1,7 @@
+@import "sidebar.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url("input.css");
-@import url("button.css");
-
-/* Text input */
-.input-error {
-    @apply ring ring-red-600;
-}
-.input-primary {
-    @apply focus:bg-form-bg bg-form-bg focus:outline-alerange focus:outline-none;
-}
-
-.input-primary-outline {
-    @apply bg-[#ffff] focus:bg-[#ffff] border-alerange focus:border-alerange;
-    @apply file:bg-alerange file:text-white file:rounded-md file:p-2;
-}
-
-/* Custom button */
-.btn-primary {
-    @apply bg-alerange text-white;
-}
-
-.btn-warning {
-    @apply bg-yellow-500 text-white;
-}
-
-.btn-danger {
-    @apply bg-red-500 text-white;
-}
-
-.btn-light-outline {
-    @apply border border-white text-white;
-}
-
-.btn-white-outline {
-    @apply text-black border border-[#f1f1f1];
-}
 
 .flex::before,
 .flex::after {
@@ -80,4 +44,38 @@
         border-color: transparent;
         --tw-ring-color: transparent;
     }
+}
+
+/* Input */
+.input-error {
+    @apply ring ring-red-600;
+}
+.input-primary {
+    @apply focus:bg-form-bg bg-form-bg focus:outline-alerange focus:outline-none;
+}
+
+.input-primary-outline {
+    @apply bg-[#ffff] focus:bg-[#ffff] border-alerange focus:border-alerange;
+    @apply file:bg-alerange file:text-white file:rounded-md file:p-2;
+}
+
+/* Button */
+.btn-primary {
+    @apply bg-alerange text-white;
+}
+
+.btn-warning {
+    @apply bg-yellow-500 text-white;
+}
+
+.btn-danger {
+    @apply bg-red-500 text-white;
+}
+
+.btn-light-outline {
+    @apply border border-white text-white;
+}
+
+.btn-white-outline {
+    @apply border border-[#f1f1f1] text-white;
 }
