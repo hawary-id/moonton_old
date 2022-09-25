@@ -3,7 +3,7 @@ import MovieCard from "@/Components/MovieCard";
 import Authenticated from "@/Layouts/Authenticated/Index";
 import { Head } from "@inertiajs/inertia-react";
 import Flickity from "react-flickity-component";
-export default function Dashboard(props) {
+export default function Dashboard({ auth, featuredMovies, movies }) {
     const flickityOptions = {
         cellAlign: "left",
         contain: true,
@@ -14,7 +14,7 @@ export default function Dashboard(props) {
         draggable: ">1",
     };
     return (
-        <Authenticated auth={props.auth} errors={props.errors}>
+        <Authenticated auth={auth}>
             <Head>
                 <link
                     rel="stylesheet"
@@ -27,14 +27,14 @@ export default function Dashboard(props) {
                     Featured Movies
                 </div>
                 <Flickity className="gap-[30px]" options={flickityOptions}>
-                    {[1, 2, 3, 4].map((i) => (
+                    {featuredMovies.map((featuredMovie) => (
                         <FeatureMovie
-                            key={i}
-                            slug="the-batman-in-love"
-                            name={`The Batman in love ${i}`}
-                            category="Comedy"
+                            key={featuredMovie.id}
+                            slug={featuredMovie.slug}
+                            name={featuredMovie.name}
+                            category={featuredMovie.category}
                             thumbnail="https://picsum.photos/id/1/300/300"
-                            rating={i + 1}
+                            rating={featuredMovie.rating}
                         />
                     ))}
                 </Flickity>
@@ -44,12 +44,12 @@ export default function Dashboard(props) {
                     Browse
                 </div>
                 <Flickity className="gap-[30px]" options={flickityOptions}>
-                    {[1, 2, 3, 4, 5, 6].map((i) => (
+                    {movies.map((movie) => (
                         <MovieCard
-                            key={i}
-                            slug="the-batman-in-love"
-                            name={`The Batman in love ${i}`}
-                            category="Comedy"
+                            key={movie.id}
+                            slug={movie.slug}
+                            name={movie.name}
+                            category={movie.category}
                             thumbnail="https://picsum.photos/id/1/300/300"
                         />
                     ))}

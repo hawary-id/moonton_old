@@ -22,7 +22,7 @@ class MovieTableSeeder extends Seeder
                 'category' => 'Anime', 
                 'video_url' => 'https://www.youtube.com/watch?v=6hB3s9bIaco', 
                 'thumbnail' => 'https://picsum.photos/id/1/300/300',
-                'rating' => 9.3,
+                'rating' => 4.3,
             ],
             [
                 'name' => 'Kimetsu No Yaiba',
