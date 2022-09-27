@@ -2,9 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -32,6 +34,23 @@ class HandleInertiaRequests extends Middleware
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
+
+     public function activePlan()
+     {
+        $activePlan = Auth::user() ? Auth::user()->LastActiveUserSubscription : null;
+        if(!$activePlan){
+            return null;
+        }
+        $lastDay = Carbon::parse($activePlan->updated_at)->addMonths($activePlan->subcriptionPlan->active_period_in_months);
+        $activeDays = Carbon::parse($activePlan->updated_at)->diffInDays($lastDay);
+        $remainingActiveDays = Carbon::parse($activePlan->expired_date)->diffInDays(Carbon::now());
+        return [
+            'name' => $activePlan->subcriptionPlan->name,
+            'remainingActiveDays' => $remainingActiveDays,
+            'activeDays' => $activeDays 
+        ];
+    }
+
     public function share(Request $request)
     {
         return array_merge(parent::share($request), [

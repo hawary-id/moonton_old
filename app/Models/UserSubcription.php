@@ -12,7 +12,7 @@ class UserSubcription extends Model
     use HasFactory,SoftDeletes;
 
     protected $fillable = [
-        'user_id','subcription_plan_id','price','expired_date','payment_status','snapToken'
+        'user_id','subcription_plan_id','price','expired_date','payment_status','snap_token'
     ];
 
     public function subcriptionPlan(): BelongsTo
