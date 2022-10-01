@@ -48,15 +48,15 @@ class User extends Authenticatable
 
     public function getIsActiveAttribute()
     {
-        if (!$this->LastActiveUserSubscription) {
+        if (!$this->LastActiveUserSubcription) {
             return false;
         }
         $dateNow = Carbon::now();
-        $dateExpired = Carbon::create($this->LastActiveUserSubscription->expired_date);
+        $dateExpired = Carbon::create($this->LastActiveUserSubcription->expired_date);
         return $dateNow->lessThanOrEqualTo($dateExpired);
     }
 
-    public function LastActiveUserSubscription(): hasOne
+    public function LastActiveUserSubcription(): hasOne
     {
         return $this->hasOne(UserSubcription::class)->wherePaymentStatus('paid')->latest();
     }
