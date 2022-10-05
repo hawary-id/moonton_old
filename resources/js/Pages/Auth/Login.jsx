@@ -135,7 +135,7 @@ export default function Login({ status, canResetPassword }) {
                                     </span>
                                 </Button>
 
-                                <Link href={route("prototype.register")}>
+                                <Link href={route("register")}>
                                     <Button
                                         type="button"
                                         variant="light-outline"
