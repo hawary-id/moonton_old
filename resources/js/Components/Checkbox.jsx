@@ -4,7 +4,7 @@ export default function Checkbox({
     name,
     value,
     handleChange,
-    checked = flse,
+    checked = false,
 }) {
     return (
         <input
