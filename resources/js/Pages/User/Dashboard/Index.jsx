@@ -33,7 +33,7 @@ export default function Dashboard({ auth, featuredMovies, movies }) {
                             slug={featuredMovie.slug}
                             name={featuredMovie.name}
                             category={featuredMovie.category}
-                            thumbnail="https://picsum.photos/id/1/300/300"
+                            thumbnail={featuredMovie.thumbnail}
                             rating={featuredMovie.rating}
                         />
                     ))}
@@ -50,7 +50,7 @@ export default function Dashboard({ auth, featuredMovies, movies }) {
                             slug={movie.slug}
                             name={movie.name}
                             category={movie.category}
-                            thumbnail="https://picsum.photos/id/1/300/300"
+                            thumbnail={movie.thumbnail}
                         />
                     ))}
                 </Flickity>
