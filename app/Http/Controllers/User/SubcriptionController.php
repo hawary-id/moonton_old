@@ -3,14 +3,31 @@
 namespace App\Http\Controllers\User;
 
 use Carbon\Carbon;
+use Midtrans\Snap;
+use Midtrans\Config;
+use Midtrans\Notification;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\SubcriptionPlan;
-use App\Http\Controllers\Controller;
 use App\Models\UserSubcription;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class SubcriptionController extends Controller
 {
+
+    public function __construct()
+    {
+        // Set your Merchant Server Key
+        Config::$serverKey = env('MIDTRANS_SERVERKEY');
+        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+        Config::$isProduction = env('MIDTRANS_IS_PRODUCTION');
+        // Set sanitization on (default)
+        Config::$isSanitized = env('MIDTRANS_IS_SANITIZED');
+        // Set 3DS transaction for credit card to true
+        Config::$is3ds = env('MIDTRANS_IS_3DS');
+    }
+
     public function index()
     {
         $subcriptionPlans = SubcriptionPlan::all();
@@ -25,10 +42,81 @@ class SubcriptionController extends Controller
             'user_id' => Auth::id(),
             'subcription_plan_id' => $subcriptionPlan->id,
             'price' => $subcriptionPlan->price,
-            'expired_date' => Carbon::now()->addMonths($subcriptionPlan->active_period_in_months),
-            'payment_status' => 'success'
+            'payment_status' => 'pending'
         ];
-        UserSubcription::create($data);
-        return redirect(route('user.dashboard.index'));
+        $userSubcription = UserSubcription::create($data);
+
+        $params = [
+            'transaction_details' => [
+                'order_id' => $userSubcription->id.'-'.Str::random(5),
+                'gross_amount' => $userSubcription->price,
+            ]
+        ];
+
+        $snapToken = Snap::getSnapToken($params);
+
+        $userSubcription->update([
+            'snap_token' => $snapToken
+        ]);
+
+        return inertia('User/Subcription/Index',[
+            'userSubcription' => $userSubcription
+        ]);
+    }
+
+    public function midtransCallback(Request $request)
+    {
+        $notif = new Notification();
+
+        $transaction_status = $notif->transaction_status;
+        $fraud = $notif->fraud_status;
+
+        $transaction_id = explode('-', $notif->order_id)[0];
+        $userSubscription = UserSubcription::find($transaction_id);
+
+        if ($transaction_status == 'capture') {
+            if ($fraud == 'challenge') {
+                // TODO Set payment status in merchant's database to 'challenge'
+                $userSubscription->payment_status = 'pending';
+            }
+            else if ($fraud == 'accept') {
+                // TODO Set payment status in merchant's database to 'success'
+                $userSubscription->payment_status = 'paid';
+                $userSubscription->expired_date = Carbon::now()->addMonths((int) $userSubscription->subscriptionPlan->active_period_in_months);
+            }
+        }
+        else if ($transaction_status == 'cancel') {
+            if ($fraud == 'challenge') {
+                // TODO Set payment status in merchant's database to 'failure'
+                $userSubscription->payment_status = 'failed';
+            }
+            else if ($fraud == 'accept') {
+                // TODO Set payment status in merchant's database to 'failure'
+                $userSubscription->payment_status = 'failed';
+            }
+        }
+        else if ($transaction_status == 'deny') {
+            // TODO Set payment status in merchant's database to 'failure'
+            $userSubscription->payment_status = 'failed';
+        }
+        else if ($transaction_status == 'settlement') {
+            // TODO set payment status in merchant's database to 'Settlement'
+            $userSubscription->payment_status = 'paid';
+            $userSubscription->expired_date = Carbon::now()->addMonths((int) $userSubscription->subscriptionPlan->active_period_in_months);
+        }
+        else if ($transaction_status == 'pending') {
+            // TODO set payment status in merchant's database to 'Pending'
+            $userSubscription->payment_status = 'pending';
+        }
+        else if ($transaction_status == 'expire') {
+            // TODO set payment status in merchant's database to 'expire'
+            $userSubscription->payment_status = 'failed';
+        }
+
+        $userSubscription->save();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Payment success'
+        ]);
     }
 }
