@@ -20,7 +20,8 @@ use Inertia\Inertia;
 */
 
 
-
+// Midtrans Route
+Route::post('midtrans/notification',[SubcriptionController::class, 'midtransCallback']);
 
 Route::redirect('/', '/login');
 
