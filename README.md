@@ -1,4 +1,4 @@
-<h1>MoontoN - Straming Movie</h1>
+<h1>MoontoN - Streaming Movie</h1>
 <p>MoontooN adalah aplikasi web streaming dan download movie subtitle indonesia. Untuk menikmati aplikasi ini, pengguna bisa memilih langganan basic maupun premium sesuai kebutuhan pengguna.</p>
 <ul>MoontooN dibangun dengan menggunakan tools sebagai berikut :
 <li><a href="https://laravel.com" target="_BLANK">laravel</a> versi 9 (backend)</li>
