@@ -1,6 +1,6 @@
-<h1>Anibes - Straming Movie</h1>
-<p>Anibes adalah aplikasi web streaming dan download movie subtitle indonesia. Untuk menikmati aplikasi ini, pengguna bisa memilih langganan basic maupun premium sesuai kebutuhan pengguna.</p>
-<ul>Anibes dibangun dengan menggunakan tools sebagai berikut :
+<h1>MoontoN - Straming Movie</h1>
+<p>MoontooN adalah aplikasi web streaming dan download movie subtitle indonesia. Untuk menikmati aplikasi ini, pengguna bisa memilih langganan basic maupun premium sesuai kebutuhan pengguna.</p>
+<ul>MoontooN dibangun dengan menggunakan tools sebagai berikut :
 <li><a href="https://laravel.com" target="_BLANK">laravel</a> versi 9 (backend)</li>
 <li><a href="https://reactjs.org" target="_BLANK">react.js</a> (frontend)</li>
 <li><a href="https://tailwindcss.com" target="_BLANK">tailwindcss</a> (styling)</li>
